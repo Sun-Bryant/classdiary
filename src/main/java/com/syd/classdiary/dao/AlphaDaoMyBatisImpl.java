@@ -11,5 +11,4 @@ public class AlphaDaoMyBatisImpl implements AlphaDao {
     public String select() {
         return "Mybatis";
     }
-
 }

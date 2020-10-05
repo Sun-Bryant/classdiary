@@ -47,6 +47,7 @@ public class AlphaController {
             String value = request.getHeader(name);
             System.out.println(name + ": " + value);
         }
+        // http://localhost:8080/classdiary/alpha/http?code=123
         System.out.println(request.getParameter("code"));
 
         //返回响应数据
@@ -54,7 +55,7 @@ public class AlphaController {
         try ( // java7新语法  在try后面加小括号，把流放在小括号里，编译的时候，会自动加finally来关闭流
                 PrintWriter writer = response.getWriter();
         ) {
-            writer.write("<h1>牛客网</h1>");
+            writer.write("<h1>班级周记</h1>");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +72,7 @@ public class AlphaController {
         return "some students";
     }
 
-    // /student/123
+    // restful风格      /student/123
     @RequestMapping(path = "/student/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String getStudent(@PathVariable("id") int id) {
@@ -92,8 +93,8 @@ public class AlphaController {
     @RequestMapping(path = "/teacher", method = RequestMethod.GET)
     public ModelAndView getTeacher() {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("name", "张三");
-        mav.addObject("age", "22");
+        mav.addObject("name", "孙云栋");
+        mav.addObject("age", "23");
         mav.setViewName("/demo/view");
         return mav;
     }
