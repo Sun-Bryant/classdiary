@@ -200,11 +200,11 @@ public class UserService implements CommunityConstant {
         return map;
     }
 
-//    public LoginTicket findLoginTicket(String ticket) {
-////        return loginTicketMapper.selectByTicket(ticket);
+    public LoginTicket findLoginTicket(String ticket) {
+        return loginTicketMapper.selectByTicket(ticket);
 //        String redisKey = RedisKeyUtil.getTicketKey(ticket);
 //        return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
-//    }
+    }
 
 //    public int updateHeader(int userId, String headUrl) {
 ////        return userMapper.updateHeader(userId, headUrl);
