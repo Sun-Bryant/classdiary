@@ -41,12 +41,12 @@ public class LoginController implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-//    @Autowired
-//    private MailClient mailClient;
-//
-//    @Autowired
-//    private TemplateEngine templateEngine;
-//
+    @Autowired
+    private MailClient mailClient;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
 //    @Autowired
 //    private RedisTemplate redisTemplate;
 
@@ -132,51 +132,51 @@ public class LoginController implements CommunityConstant {
         return "/site/operate-result";
     }
 
-//    @RequestMapping(path = "/forget", method = RequestMethod.GET)
-//    public String forget() {
-//        return "/site/forget";
-//    }
-//
-//    // 重置密码
-//    @RequestMapping(path = "/forget/password", method = RequestMethod.POST)
-//    public String resetPassword(String email, String verifyCode, String password, Model model, HttpSession session) {
-//        String code = (String) session.getAttribute("verifyCode");
-//        if (StringUtils.isBlank(verifyCode) || StringUtils.isBlank(code) || !code.equalsIgnoreCase(verifyCode)) {
-//            model.addAttribute("codeMsg", "验证码错误!");
-//            return "/site/forget";
-//        }
-//
-//        Map<String, Object> map = userService.resetPassword(email, password);
-//        if (map.containsKey("user")) {
-//            return "redirect:/login";
-//        } else {
-//            model.addAttribute("emailMsg", map.get("emailMsg"));
-//            model.addAttribute("passwordMsg", map.get("passwordMsg"));
-//            return "/site/forget";
-//        }
-//    }
-//
-//    // 忘记密码
-//    @RequestMapping(path = "/forget/code", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String getForgetCode(String email, HttpSession session) {
-//        System.out.printf(email);
-//        if (StringUtils.isBlank(email)) {
-//            return CommunityUtil.getJSONString(1, "邮箱不能为空！");
-//        }
-//        //发送邮件
-//        Context context = new Context();
-//        context.setVariable("email", email);
-//        String code = CommunityUtil.generateUUID().substring(0, 4);//生成验证码
-//        context.setVariable("verifyCode", code);
-//        String content = templateEngine.process("/mail/forget", context);
-//        mailClient.sendMail(email, "找回密码", content);
-//
-//        //将code保存到session
-//        session.setAttribute("verifyCode", code);
-//
-//        return CommunityUtil.getJSONString(0);
-//    }
+    @RequestMapping(path = "/forget", method = RequestMethod.GET)
+    public String forget() {
+        return "/site/forget";
+    }
+
+    // 重置密码
+    @RequestMapping(path = "/forget/password", method = RequestMethod.POST)
+    public String resetPassword(String email, String verifyCode, String password, Model model, HttpSession session) {
+        String code = (String) session.getAttribute("verifyCode");
+        if (StringUtils.isBlank(verifyCode) || StringUtils.isBlank(code) || !code.equalsIgnoreCase(verifyCode)) {
+            model.addAttribute("codeMsg", "验证码错误!");
+            return "/site/forget";
+        }
+
+        Map<String, Object> map = userService.resetPassword(email, password);
+        if (map.containsKey("user")) {
+            return "redirect:/login";
+        } else {
+            model.addAttribute("emailMsg", map.get("emailMsg"));
+            model.addAttribute("passwordMsg", map.get("passwordMsg"));
+            return "/site/forget";
+        }
+    }
+
+    // 忘记密码
+    @RequestMapping(path = "/forget/code", method = RequestMethod.GET)
+    @ResponseBody
+    public String getForgetCode(String email, HttpSession session) {
+        System.out.printf(email);
+        if (StringUtils.isBlank(email)) {
+            return CommunityUtil.getJSONString(1, "邮箱不能为空！");
+        }
+        //发送邮件
+        Context context = new Context();
+        context.setVariable("email", email);
+        String code = CommunityUtil.generateUUID().substring(0, 4);//生成验证码
+        context.setVariable("verifyCode", code);
+        String content = templateEngine.process("/mail/forget", context);
+        mailClient.sendMail(email, "找回密码", content);
+
+        //将code保存到session
+        session.setAttribute("verifyCode", code);
+
+        return CommunityUtil.getJSONString(0);
+    }
 
     @RequestMapping(path = "/kaptcha", method = RequestMethod.GET)
     public void getKaptcha(HttpServletResponse response , HttpSession session ) {
