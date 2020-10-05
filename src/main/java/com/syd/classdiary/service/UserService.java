@@ -206,43 +206,43 @@ public class UserService implements CommunityConstant {
 //        return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
     }
 
-//    public int updateHeader(int userId, String headUrl) {
-////        return userMapper.updateHeader(userId, headUrl);
-//        // 调用mapper更新头像路径
-//        int rows = userMapper.updateHeader(userId, headUrl);
-//        // 清除缓存
+    public int updateHeader(int userId, String headUrl) {
+//        return userMapper.updateHeader(userId, headUrl);
+        // 调用mapper更新头像路径
+        int rows = userMapper.updateHeader(userId, headUrl);
+        // 清除缓存
 //        clearCache(userId);
-//        return rows;
-//    }
-//
-//    // 修改密码
-//    public Map<String, Object> updatePassword(int userId, String oldPassword, String newPassword) {
-//        Map<String, Object> map = new HashMap<>();
-//
-//        // 空值处理
-//        if (StringUtils.isBlank(oldPassword)) {
-//            map.put("oldPasswordMsg", "原密码不能为空!");
-//            return map;
-//        }
-//        if (StringUtils.isBlank(newPassword)) {
-//            map.put("newPasswordMsg", "新密码不能为空!");
-//            return map;
-//        }
-//
-//        // 验证原始密码
-//        User user = userMapper.selectById(userId);
-//        oldPassword = CommunityUtil.md5(oldPassword + user.getSalt());
-//        if (!user.getPassword().equals(oldPassword)) {
-//            map.put("oldPasswordMsg", "原密码输入有误!");
-//            return map;
-//        }
-//
-//        // 更新密码
-//        newPassword = CommunityUtil.md5(newPassword + user.getSalt());
-//        userMapper.updatePassword(userId, newPassword);
-//        return map;
-//    }
-//
+        return rows;
+    }
+
+    // 修改密码
+    public Map<String, Object> updatePassword(int userId, String oldPassword, String newPassword) {
+        Map<String, Object> map = new HashMap<>();
+
+        // 空值处理
+        if (StringUtils.isBlank(oldPassword)) {
+            map.put("oldPasswordMsg", "原密码不能为空!");
+            return map;
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            map.put("newPasswordMsg", "新密码不能为空!");
+            return map;
+        }
+
+        // 验证原始密码
+        User user = userMapper.selectById(userId);
+        oldPassword = CommunityUtil.md5(oldPassword + user.getSalt());
+        if (!user.getPassword().equals(oldPassword)) {
+            map.put("oldPasswordMsg", "原密码输入有误!");
+            return map;
+        }
+
+        // 更新密码
+        newPassword = CommunityUtil.md5(newPassword + user.getSalt());
+        userMapper.updatePassword(userId, newPassword);
+        return map;
+    }
+
 //    public User findUserByName(String username) {
 //        return userMapper.selectByName(username);
 //    }
