@@ -2,6 +2,7 @@ package com.syd.classdiary.service;
 
 import com.syd.classdiary.dao.DiscussPostMapper;
 import com.syd.classdiary.entity.DiscussPost;
+import com.syd.classdiary.util.SensitiveFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ public class DiscussPostService {
     @Autowired
     private DiscussPostMapper discussPostMapper;
 
-//    @Autowired
-//    private SensitiveFilter sensitiveFilter;
-//
+    @Autowired
+    private SensitiveFilter sensitiveFilter;
+
 //    @Value("${caffeine.posts.max-size}")
 //    private int maxSize;
 //
@@ -98,21 +99,21 @@ public class DiscussPostService {
         logger.debug("load post rows from DB.");
         return discussPostMapper.selectDiscussPostRows(userId);
     }
-//
-//    public int addDiscussPost(DiscussPost post) {
-//        // 判空
-//        if (post == null) {
-//            throw new IllegalArgumentException("参数不能为空！");
-//        }
-//        //过滤（转义）HTMl标签
-//        post.setTitle(HtmlUtils.htmlEscape(post.getTitle()));
-//        post.setContent(HtmlUtils.htmlEscape(post.getContent()));
-//        //过滤敏感词
-//        post.setTitle(sensitiveFilter.filter(post.getTitle()));
-//        post.setContent(sensitiveFilter.filter(post.getContent()));
-//
-//        return discussPostMapper.insertDiscussPost(post);
-//    }
+
+    public int addDiscussPost(DiscussPost post) {
+        // 判空
+        if (post == null) {
+            throw new IllegalArgumentException("参数不能为空！");
+        }
+        //过滤（转义）HTMl标签
+        post.setTitle(HtmlUtils.htmlEscape(post.getTitle()));
+        post.setContent(HtmlUtils.htmlEscape(post.getContent()));
+        //过滤敏感词
+        post.setTitle(sensitiveFilter.filter(post.getTitle()));
+        post.setContent(sensitiveFilter.filter(post.getContent()));
+
+        return discussPostMapper.insertDiscussPost(post);
+    }
 
     public DiscussPost findDiscussPostById(int id) {
         return discussPostMapper.selectDiscussPostById(id);
