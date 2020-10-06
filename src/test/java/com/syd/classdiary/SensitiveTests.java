@@ -26,30 +26,30 @@ public class SensitiveTests {
         text = sensitiveFilter.filter(text);
         System.out.println(text);
 
-        text = "fabcd";
-        text  =  sensitiveFilter.filter(text);
-        System.out.println(text);
-
-        text = "fabcc";
-        text  =  sensitiveFilter.filter(text);
-        System.out.println(text);
-
-        text = "fabc";
-        text  =  sensitiveFilter.filter(text);
-        System.out.println(text);
-
-        text = "☆f☆a☆b☆c☆f☆a☆b☆c☆";
-//        text = "☆a☆b☆c☆";
-        text  =  sensitiveFilter.filter(text);
-        System.out.println(text);
-
-        text = "☆f☆a☆b☆c";
-        text  =  sensitiveFilter.filter(text);
-        System.out.println(text);
-
-        text = "f☆a☆b☆c";
-        text  =  sensitiveFilter.filter(text);
-        System.out.println(text);
+//        text = "fabcd";
+//        text  =  sensitiveFilter.filter(text);
+//        System.out.println(text);
+//
+//        text = "fabcc";
+//        text  =  sensitiveFilter.filter(text);
+//        System.out.println(text);
+//
+//        text = "fabc";
+//        text  =  sensitiveFilter.filter(text);
+//        System.out.println(text);
+//
+//        text = "☆f☆a☆b☆c☆f☆a☆b☆c☆";
+////        text = "☆a☆b☆c☆";
+//        text  =  sensitiveFilter.filter(text);
+//        System.out.println(text);
+//
+//        text = "☆f☆a☆b☆c";
+//        text  =  sensitiveFilter.filter(text);
+//        System.out.println(text);
+//
+//        text = "f☆a☆b☆c";
+//        text  =  sensitiveFilter.filter(text);
+//        System.out.println(text);
     }
 
 }

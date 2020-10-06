@@ -1,8 +1,10 @@
 package com.syd.classdiary.controller;
 
+import com.syd.classdiary.entity.Comment;
 import com.syd.classdiary.entity.DiscussPost;
 import com.syd.classdiary.entity.Page;
 import com.syd.classdiary.entity.User;
+import com.syd.classdiary.service.CommentService;
 import com.syd.classdiary.service.DiscussPostService;
 import com.syd.classdiary.service.UserService;
 import com.syd.classdiary.util.CommunityConstant;
@@ -28,9 +30,9 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private UserService userService;
 
-//    @Autowired
-//    private CommentService commentService;
-//
+    @Autowired
+    private CommentService commentService;
+
 //    @Autowired
 //    private LikeService likeService;
 //
@@ -92,27 +94,27 @@ public class DiscussPostController implements CommunityConstant {
 //        int likeStatus = hostHolder.getUser() == null ? 0 :
 //                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
 //        model.addAttribute("likeStatus", likeStatus);
-//
-//        //查评论的分页信息
-//        page.setLimit(5);
-//        page.setPath("/discuss/detail/" + discussPostId);
-//        page.setRows(post.getCommentCount());
 
-//        //评论：给帖子的评论。
-//        //回复：给评论的评论。
-//        //评论列表
-//        List<Comment> commentList = commentService.findCommentsByEntity(
-//                ENTITY_TYPE_POST, post.getId(), page.getOffset(), page.getLimit());
-//        //评论VO列表
-//        List<Map<String, Object>> commentVoList = new ArrayList<>();
-//        if (commentList != null) {
-//            for (Comment comment : commentList) {
-//                //评论VO
-//                Map<String, Object> commentVo = new HashMap<>();
-//                //加评论
-//                commentVo.put("comment", comment);
-//                //加作者
-//                commentVo.put("user", userService.findUserById(comment.getUserId()));
+        //查评论的分页信息
+        page.setLimit(5);
+        page.setPath("/discuss/detail/" + discussPostId);
+        page.setRows(post.getCommentCount());
+
+        //评论：给帖子的评论。
+        //回复：给评论的评论。
+        //评论列表
+        List<Comment> commentList = commentService.findCommentsByEntity(
+                ENTITY_TYPE_POST, post.getId(), page.getOffset(), page.getLimit());
+        //评论VO列表
+        List<Map<String, Object>> commentVoList = new ArrayList<>();
+        if (commentList != null) {
+            for (Comment comment : commentList) {
+                //评论VO
+                Map<String, Object> commentVo = new HashMap<>();
+                //加评论
+                commentVo.put("comment", comment);
+                //加作者
+                commentVo.put("user", userService.findUserById(comment.getUserId()));
 //                // 点赞数量
 //                likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
 //                commentVo.put("likeCount", likeCount);
@@ -120,23 +122,23 @@ public class DiscussPostController implements CommunityConstant {
 //                likeStatus = hostHolder.getUser() == null ? 0 :
 //                        likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_COMMENT, comment.getId());
 //                commentVo.put("likeStatus", likeStatus);
-//
-//                //回复列表
-//                List<Comment> replyList = commentService.findCommentsByEntity(
-//                        ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
-//                //回复VO列表
-//                List<Map<String, Object>> replyVoList = new ArrayList<>();
-//                if (replyList != null) {
-//                    for (Comment reply : replyList) {
-//                        //回复VO
-//                        Map<String, Object> replyVo = new HashMap<>();
-//                        //加回复
-//                        replyVo.put("reply", reply);
-//                        //加作者
-//                        replyVo.put("user", userService.findUserById(reply.getUserId()));
-//                        //加回复目标（这点与评论不同，有可能有具体回复的人）
-//                        User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
-//                        replyVo.put("target", target);
+
+                //回复列表
+                List<Comment> replyList = commentService.findCommentsByEntity(
+                        ENTITY_TYPE_COMMENT, comment.getId(), 0, Integer.MAX_VALUE);
+                //回复VO列表
+                List<Map<String, Object>> replyVoList = new ArrayList<>();
+                if (replyList != null) {
+                    for (Comment reply : replyList) {
+                        //回复VO
+                        Map<String, Object> replyVo = new HashMap<>();
+                        //加回复
+                        replyVo.put("reply", reply);
+                        //加作者
+                        replyVo.put("user", userService.findUserById(reply.getUserId()));
+                        //加回复目标（这点与评论不同，有可能有具体回复的人）
+                        User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
+                        replyVo.put("target", target);
 //                        // 点赞数量
 //                        likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
 //                        replyVo.put("likeCount", likeCount);
@@ -144,21 +146,21 @@ public class DiscussPostController implements CommunityConstant {
 //                        likeStatus = hostHolder.getUser() == null ? 0 :
 //                                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_COMMENT, reply.getId());
 //                        replyVo.put("likeStatus", likeStatus);
-//
-//                        replyVoList.add(replyVo);
-//                    }
-//                }
-//                commentVo.put("replys", replyVoList);
-//
-//
-//                //回复数量
-//                int replyCount = commentService.findCommentCount(ENTITY_TYPE_COMMENT, comment.getId());
-//                commentVo.put("replyCount", replyCount);
-//
-//                commentVoList.add(commentVo);
-//            }
-//        }
-//        model.addAttribute("comments", commentVoList);
+
+                        replyVoList.add(replyVo);
+                    }
+                }
+                commentVo.put("replys", replyVoList);
+
+
+                //回复数量
+                int replyCount = commentService.findCommentCount(ENTITY_TYPE_COMMENT, comment.getId());
+                commentVo.put("replyCount", replyCount);
+
+                commentVoList.add(commentVo);
+            }
+        }
+        model.addAttribute("comments", commentVoList);
         return "/site/discuss-detail";
     }
 
