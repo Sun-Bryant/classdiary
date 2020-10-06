@@ -243,10 +243,10 @@ public class UserService implements CommunityConstant {
         return map;
     }
 
-//    public User findUserByName(String username) {
-//        return userMapper.selectByName(username);
-//    }
-//
+    public User findUserByName(String username) {
+        return userMapper.selectByName(username);
+    }
+
 //    // 1.优先从缓存中取值
 //    private User getCache(int userId) {
 //        String redisKey = RedisKeyUtil.getUserKey(userId);
