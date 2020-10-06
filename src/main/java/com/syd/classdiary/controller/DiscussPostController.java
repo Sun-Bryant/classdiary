@@ -1,6 +1,7 @@
 package com.syd.classdiary.controller;
 
 import com.syd.classdiary.entity.DiscussPost;
+import com.syd.classdiary.entity.Page;
 import com.syd.classdiary.entity.User;
 import com.syd.classdiary.service.DiscussPostService;
 import com.syd.classdiary.service.UserService;
@@ -75,15 +76,15 @@ public class DiscussPostController implements CommunityConstant {
         return CommunityUtil.getJSONString(0, "发布成功");
     }
 
-//    // 帖子详情
-//    @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
-//    public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
-//        //查询帖子
-//        DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
-//        model.addAttribute("post", post);
-//        //查询作者
-//        User user = userService.findUserById(post.getUserId());
-//        model.addAttribute("user", user);
+    // 帖子详情
+    @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
+    public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
+        //查询帖子
+        DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
+        model.addAttribute("post", post);
+        //查询作者
+        User user = userService.findUserById(post.getUserId());
+        model.addAttribute("user", user);
 //        // 点赞数量
 //        long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
 //        model.addAttribute("likeCount", likeCount);
@@ -96,7 +97,7 @@ public class DiscussPostController implements CommunityConstant {
 //        page.setLimit(5);
 //        page.setPath("/discuss/detail/" + discussPostId);
 //        page.setRows(post.getCommentCount());
-//
+
 //        //评论：给帖子的评论。
 //        //回复：给评论的评论。
 //        //评论列表
@@ -158,9 +159,9 @@ public class DiscussPostController implements CommunityConstant {
 //            }
 //        }
 //        model.addAttribute("comments", commentVoList);
-//        return "/site/discuss-detail";
-//    }
-//
+        return "/site/discuss-detail";
+    }
+
 //    // 置顶
 //    @RequestMapping(path = "/top", method = RequestMethod.POST)
 //    @ResponseBody
