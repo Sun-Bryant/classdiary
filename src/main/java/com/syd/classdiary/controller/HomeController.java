@@ -4,6 +4,7 @@ import com.syd.classdiary.entity.DiscussPost;
 import com.syd.classdiary.entity.Page;
 import com.syd.classdiary.entity.User;
 import com.syd.classdiary.service.DiscussPostService;
+import com.syd.classdiary.service.LikeService;
 import com.syd.classdiary.service.UserService;
 import com.syd.classdiary.util.CommunityConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class HomeController implements CommunityConstant {
     @Autowired
     private UserService userService;
 
-//    @Autowired
-//    private LikeService likeService;
+    @Autowired
+    private LikeService likeService;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String root() {
@@ -55,8 +56,8 @@ public class HomeController implements CommunityConstant {
                 map.put("post", post);
                 User user = userService.findUserById(post.getUserId());
                 map.put("user", user);
-//                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
-//                map.put("likeCount", likeCount);
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
                 discussPosts.add(map);
             }
         }

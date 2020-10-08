@@ -2,6 +2,7 @@ package com.syd.classdiary.controller;
 
 import com.syd.classdiary.annotation.LoginRequired;
 import com.syd.classdiary.entity.User;
+import com.syd.classdiary.service.LikeService;
 import com.syd.classdiary.service.UserService;
 import com.syd.classdiary.util.CommunityConstant;
 import com.syd.classdiary.util.CommunityUtil;
@@ -49,10 +50,10 @@ public class UserController implements CommunityConstant {
 
 //    @Autowired
 //    private DiscussPostService discussPostService;
-//
-//    @Autowired
-//    private LikeService likeService;
-//
+
+    @Autowired
+    private LikeService likeService;
+
 //    @Autowired
 //    private CommentService commentService;
 //
@@ -187,20 +188,21 @@ public class UserController implements CommunityConstant {
         }
     }
 
-//    // 个人主页
-//    @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
-//    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
-//        User user = userService.findUserById(userId);
-//        if (user == null) {
-//            throw new RuntimeException("该用户不存在!");
-//        }
-//
-//        // 用户
-//        model.addAttribute("user", user);
-//        // 点赞数量
-//        int likeCount = likeService.findUserLikeCount(userId);
-//        model.addAttribute("likeCount", likeCount);
-//
+    // 个人主页
+    @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
+        User user = userService.findUserById(userId);
+        System.out.println(user);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在!");
+        }
+
+        // 用户
+        model.addAttribute("user", user);
+        // 点赞数量
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
+
 //        // 关注数量
 //        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
 //        model.addAttribute("followeeCount", followeeCount);
@@ -213,11 +215,11 @@ public class UserController implements CommunityConstant {
 //            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
 //        }
 //        model.addAttribute("hasFollowed", hasFollowed);
-//
-//        return "/site/profile";
-//    }
-//
-//
+
+        return "/site/profile";
+    }
+
+
 //    // 我的帖子
 //    @RequestMapping(path = "/mypost/{userId}", method = RequestMethod.GET)
 //    public String getMyPost(@PathVariable("userId") int userId, Page page, Model model) {
