@@ -4,7 +4,7 @@ import com.syd.classdiary.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
-//@Deprecated
+@Deprecated
 public interface LoginTicketMapper {
 
     @Insert({

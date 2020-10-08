@@ -6,11 +6,13 @@ import com.syd.classdiary.service.UserService;
 import com.syd.classdiary.util.CommunityConstant;
 import com.syd.classdiary.util.CommunityUtil;
 import com.syd.classdiary.util.MailClient;
+import com.syd.classdiary.util.RedisKeyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +49,8 @@ public class LoginController implements CommunityConstant {
     @Autowired
     private TemplateEngine templateEngine;
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String getLoginPage() {
@@ -56,15 +58,15 @@ public class LoginController implements CommunityConstant {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public String login(Model model, String username, String password, String code, boolean rememberme,
-                        HttpSession session, HttpServletResponse response/*, @CookieValue("kaptchaOwner") String kaptchaOwner*/) {
+    public String login(Model model, String username, String password, String code, boolean rememberme, /*HttpSession session,*/
+                        HttpServletResponse response, @CookieValue("kaptchaOwner") String kaptchaOwner) {
         //判断验证码
-        String kaptcha = (String) session.getAttribute("kaptcha");
-//        String kaptcha = null;
-//        if (StringUtils.isNotBlank(kaptchaOwner)) {
-//            String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
-//            kaptcha = (String) redisTemplate.opsForValue().get(redisKey);
-//        }
+//        String kaptcha = (String) session.getAttribute("kaptcha");
+        String kaptcha = null;
+        if (StringUtils.isNotBlank(kaptchaOwner)) {
+            String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
+            kaptcha = (String) redisTemplate.opsForValue().get(redisKey);
+        }
 
         if (StringUtils.isBlank(kaptcha) || StringUtils.isBlank(code) || !kaptcha.equalsIgnoreCase(code)) {
             model.addAttribute("codeMsg", "验证码不正确！");
@@ -180,25 +182,25 @@ public class LoginController implements CommunityConstant {
     }
 
     @RequestMapping(path = "/kaptcha", method = RequestMethod.GET)
-    public void getKaptcha(HttpServletResponse response , HttpSession session ) {
+    public void getKaptcha(HttpServletResponse response /*, HttpSession session*/) {
         //生成验证码
         String text = kaptchaProducer.createText();
         BufferedImage image = kaptchaProducer.createImage(text);
 
-        //将验证码存入session。
-        session.setAttribute("kaptcha", text);
+//        //将验证码存入session。
+//        session.setAttribute("kaptcha", text);
 
-//        // 验证码的归属：临时给客户端颁发一个凭证（随机字符串），来标识验证码的所属用户。
-//        String kaptchaOwner = CommunityUtil.generateUUID();
-//        // 将验证码的归属存入cookie
-//        Cookie cookie = new Cookie("kaptchaOwner", kaptchaOwner);
-//        cookie.setMaxAge(60);
-//        cookie.setPath(contextPath);
-//        response.addCookie(cookie);
-//
-//        //将验证码存入redis
-//        String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
-//        redisTemplate.opsForValue().set(redisKey, text, 60, TimeUnit.SECONDS);
+        // 验证码的归属：临时给客户端颁发一个凭证（随机字符串），来标识验证码的所属用户。
+        String kaptchaOwner = CommunityUtil.generateUUID();
+        // 将验证码的归属存入cookie
+        Cookie cookie = new Cookie("kaptchaOwner", kaptchaOwner);
+        cookie.setMaxAge(60);
+        cookie.setPath(contextPath);
+        response.addCookie(cookie);
+
+        //将验证码存入redis
+        String redisKey = RedisKeyUtil.getKaptchaKey(kaptchaOwner);
+        redisTemplate.opsForValue().set(redisKey, text, 60, TimeUnit.SECONDS);
 
         //将图片输出给浏览器
         response.setContentType("image/png");
