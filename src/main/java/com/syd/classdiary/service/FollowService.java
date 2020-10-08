@@ -1,8 +1,8 @@
-package com.syd.community.service;
+package com.syd.classdiary.service;
 
-import com.syd.community.entity.User;
-import com.syd.community.util.CommunityConstant;
-import com.syd.community.util.RedisKeyUtil;
+import com.syd.classdiary.entity.User;
+import com.syd.classdiary.util.CommunityConstant;
+import com.syd.classdiary.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;

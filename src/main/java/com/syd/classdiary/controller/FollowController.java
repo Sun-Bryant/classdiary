@@ -1,14 +1,12 @@
-package com.syd.community.controller;
+package com.syd.classdiary.controller;
 
-import com.syd.community.entity.Event;
-import com.syd.community.entity.Page;
-import com.syd.community.entity.User;
-import com.syd.community.event.EventProducer;
-import com.syd.community.service.FollowService;
-import com.syd.community.service.UserService;
-import com.syd.community.util.CommunityConstant;
-import com.syd.community.util.CommunityUtil;
-import com.syd.community.util.HostHolder;
+import com.syd.classdiary.entity.Page;
+import com.syd.classdiary.entity.User;
+import com.syd.classdiary.service.FollowService;
+import com.syd.classdiary.service.UserService;
+import com.syd.classdiary.util.CommunityConstant;
+import com.syd.classdiary.util.CommunityUtil;
+import com.syd.classdiary.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +30,8 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private HostHolder hostHolder;
 
-    @Autowired
-    private EventProducer eventProducer;
+//    @Autowired
+//    private EventProducer eventProducer;
 
     // 关注某人
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
@@ -46,14 +44,14 @@ public class FollowController implements CommunityConstant {
         followService.follow(user.getId(), entityType, entityId);
 
         // 触发关注事件（目前只能关注人）
-        Event event = new Event()
-                .setTopic(TOPIC_FOLLOW)
-                .setUserId(hostHolder.getUser().getId())
-                .setEntityType(entityType)
-                .setEntityId(entityId)
-                .setEntityUserId(entityId);
-        //发送消息
-        eventProducer.fireEvent(event);
+//        Event event = new Event()
+//                .setTopic(TOPIC_FOLLOW)
+//                .setUserId(hostHolder.getUser().getId())
+//                .setEntityType(entityType)
+//                .setEntityId(entityId)
+//                .setEntityUserId(entityId);
+//        //发送消息
+//        eventProducer.fireEvent(event);
 
         return CommunityUtil.getJSONString(0, "已关注!");
     }
