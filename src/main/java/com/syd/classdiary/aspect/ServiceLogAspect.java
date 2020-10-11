@@ -30,7 +30,7 @@ public class ServiceLogAspect {
         // 用户[1.2.3.4],在[xxx],访问了[com.syd.community.service.xxx()].
         // 这里不能直接在上面添加  HttpServletRequest request，需要采用如下方面得到request对象。
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attributes == null) {  //通过消费者去调的，此时我们简单处理不去记录日志了。
+        if (attributes == null) {  //通过消费者去调的，而不是用controller调用的，此时就没有request，此时我们简单处理不去记录日志了。
             return;
         }
         HttpServletRequest request = attributes.getRequest();

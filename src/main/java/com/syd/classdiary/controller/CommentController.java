@@ -1,6 +1,9 @@
 package com.syd.classdiary.controller;
 
 import com.syd.classdiary.entity.Comment;
+import com.syd.classdiary.entity.DiscussPost;
+import com.syd.classdiary.entity.Event;
+import com.syd.classdiary.event.EventProducer;
 import com.syd.classdiary.service.CommentService;
 import com.syd.classdiary.service.DiscussPostService;
 import com.syd.classdiary.util.CommunityConstant;
@@ -26,9 +29,9 @@ public class CommentController implements CommunityConstant {
     @Autowired
     private HostHolder hostHolder;
 
-//    @Autowired
-//    private EventProducer eventProducer;
-//
+    @Autowired
+    private EventProducer eventProducer;
+
 //    @Autowired
 //    private RedisTemplate redisTemplate;
 
@@ -40,23 +43,23 @@ public class CommentController implements CommunityConstant {
         comment.setCreateTime(new Date());
         commentService.addComment(comment);
 
-//        //触发评论事件
-//        Event event = new Event()
-//                .setTopic(TOPIC_COMMENT)
-//                .setUserId(hostHolder.getUser().getId())
-//                .setEntityType(comment.getEntityType())
-//                .setEntityId(comment.getEntityId())
-//                .setData("postId", discussPostId);
-//        if (comment.getEntityType() == ENTITY_TYPE_POST) {
-//            DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
-//            event.setEntityUserId(target.getUserId());
-//        } else if (comment.getEntityType() == ENTITY_TYPE_COMMENT) {
-//            Comment target = commentService.findCommentById(comment.getEntityId());
-//            event.setEntityUserId(target.getUserId());
-//        }
-//        //发布
-//        eventProducer.fireEvent(event);
-//
+        //触发评论事件
+        Event event = new Event()
+                .setTopic(TOPIC_COMMENT)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(comment.getEntityType())
+                .setEntityId(comment.getEntityId())
+                .setData("postId", discussPostId);
+        if (comment.getEntityType() == ENTITY_TYPE_POST) {
+            DiscussPost target = discussPostService.findDiscussPostById(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        } else if (comment.getEntityType() == ENTITY_TYPE_COMMENT) {
+            Comment target = commentService.findCommentById(comment.getEntityId());
+            event.setEntityUserId(target.getUserId());
+        }
+        //发布
+        eventProducer.fireEvent(event);
+
 //        if (comment.getEntityType() == ENTITY_TYPE_POST) {
 //            // 触发发帖事件
 //            event = new Event()

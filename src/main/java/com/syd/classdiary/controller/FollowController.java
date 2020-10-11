@@ -1,7 +1,9 @@
 package com.syd.classdiary.controller;
 
+import com.syd.classdiary.entity.Event;
 import com.syd.classdiary.entity.Page;
 import com.syd.classdiary.entity.User;
+import com.syd.classdiary.event.EventProducer;
 import com.syd.classdiary.service.FollowService;
 import com.syd.classdiary.service.UserService;
 import com.syd.classdiary.util.CommunityConstant;
@@ -30,8 +32,8 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private HostHolder hostHolder;
 
-//    @Autowired
-//    private EventProducer eventProducer;
+    @Autowired
+    private EventProducer eventProducer;
 
     // 关注某人
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
@@ -43,15 +45,15 @@ public class FollowController implements CommunityConstant {
         // 关注
         followService.follow(user.getId(), entityType, entityId);
 
-        // 触发关注事件（目前只能关注人）
-//        Event event = new Event()
-//                .setTopic(TOPIC_FOLLOW)
-//                .setUserId(hostHolder.getUser().getId())
-//                .setEntityType(entityType)
-//                .setEntityId(entityId)
-//                .setEntityUserId(entityId);
-//        //发送消息
-//        eventProducer.fireEvent(event);
+//         触发关注事件（目前只能关注人）
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        //发送消息
+        eventProducer.fireEvent(event);
 
         return CommunityUtil.getJSONString(0, "已关注!");
     }
