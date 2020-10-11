@@ -3,6 +3,7 @@ package com.syd.classdiary.config;
 import com.syd.classdiary.controller.interceptor.AlphaInterceptor;
 import com.syd.classdiary.controller.interceptor.LoginRequiredInterceptor;
 import com.syd.classdiary.controller.interceptor.LoginTicketInterceptor;
+import com.syd.classdiary.controller.interceptor.MessageInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,9 +21,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginRequiredInterceptor loginRequiredInterceptor;
 
-//    @Autowired
-//    private MessageInterceptor messageInterceptor;
-//
+    @Autowired
+    private MessageInterceptor messageInterceptor;
+
 //    @Autowired
 //    private DataInterceptor dataInterceptor;
 
@@ -41,10 +42,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginRequiredInterceptor)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
 
-//        //注册拦截器messageInterceptor
-//        registry.addInterceptor(messageInterceptor)
-//                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
-//
+        //注册拦截器messageInterceptor
+        registry.addInterceptor(messageInterceptor)
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
+
 //        //注册拦截器dataInterceptor
 //        registry.addInterceptor(dataInterceptor)
 //                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");

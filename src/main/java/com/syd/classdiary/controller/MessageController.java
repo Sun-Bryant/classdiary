@@ -160,9 +160,9 @@ public class MessageController implements CommunityConstant {
         } else {
             return CommunityUtil.getJSONString(1, "删除失败！");
         }
-
     }
 
+    // 查询三类通知列表
     @RequestMapping(path = "/notice/list", method = RequestMethod.GET)
     public String getNoticeList(Model model) {
         User user = hostHolder.getUser();
@@ -191,7 +191,6 @@ public class MessageController implements CommunityConstant {
             model.addAttribute("commentNotice", messageVO);
         }
 
-
         // 查询点赞类通知
         message = messageService.findLatestNotice(user.getId(), TOPIC_LIKE);
         if (message != null) {
@@ -214,7 +213,6 @@ public class MessageController implements CommunityConstant {
 
             model.addAttribute("likeNotice", messageVO);
         }
-
 
         // 查询关注类通知
         message = messageService.findLatestNotice(user.getId(), TOPIC_FOLLOW);
@@ -269,7 +267,7 @@ public class MessageController implements CommunityConstant {
                 map.put("entityType", data.get("entityType"));
                 map.put("entityId", data.get("entityId"));
                 map.put("postId", data.get("postId"));
-                // 通知作者
+                // 通知的作者
                 map.put("fromUser", userService.findUserById(notice.getFromId()));
 
                 noticeVoList.add(map);
