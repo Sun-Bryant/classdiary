@@ -8,6 +8,10 @@ import com.syd.classdiary.util.HostHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,9 +47,9 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
                 //在本次请求中持有用户（暂存用户）  如果仅仅把用户存在容器中，在多线程并发情况下可能会产生冲突，所有我们需要使用hostHolder
                 hostHolder.setUser(user);
                 // 构建用户认证的结果（凭证）,并存入SecurityContext,以便于Security进行授权.
-//                Authentication authentication = new UsernamePasswordAuthenticationToken(
-//                        user, user.getPassword(), userService.getAuthorities(user.getId()));
-//                SecurityContextHolder.setContext(new SecurityContextImpl(authentication));
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        user, user.getPassword(), userService.getAuthorities(user.getId()));
+                SecurityContextHolder.setContext(new SecurityContextImpl(authentication));
             }
         }
         return true;
@@ -66,6 +70,6 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         //在模板引擎返回之后清理数据
         hostHolder.clear();
-//        SecurityContextHolder.clearContext();
+        SecurityContextHolder.clearContext();
     }
 }
