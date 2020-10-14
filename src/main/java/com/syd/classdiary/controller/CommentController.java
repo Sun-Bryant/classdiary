@@ -8,7 +8,9 @@ import com.syd.classdiary.service.CommentService;
 import com.syd.classdiary.service.DiscussPostService;
 import com.syd.classdiary.util.CommunityConstant;
 import com.syd.classdiary.util.HostHolder;
+import com.syd.classdiary.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +34,8 @@ public class CommentController implements CommunityConstant {
     @Autowired
     private EventProducer eventProducer;
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
@@ -69,10 +71,10 @@ public class CommentController implements CommunityConstant {
 //                    .setEntityId(discussPostId);
 //            eventProducer.fireEvent(event);
 //        }
-//
-//        // 计算帖子分数 其实就是把有了点赞评论收藏等操作后，需要再次计算帖子分数的集合中。然后利用定时任务去计算帖子分数。
-//        String redisKey = RedisKeyUtil.getPostScoreKey();
-//        redisTemplate.opsForSet().add(redisKey, discussPostId);
+
+        // 计算帖子分数 其实就是把有了点赞评论收藏等操作后，需要再次计算帖子分数的集合中。然后利用定时任务去计算帖子分数。
+        String redisKey = RedisKeyUtil.getPostScoreKey();
+        redisTemplate.opsForSet().add(redisKey, discussPostId);
 
         return "redirect:/discuss/detail/" + discussPostId;
     }

@@ -42,11 +42,11 @@ public class HomeController implements CommunityConstant {
         //方法调用前，SpringMVC（DispatcherServlet）会自动实例化Model和Page，并将Page注入Model。
         //所以，在Thymeleaf中可以直接访问Page中的对象
         page.setRows(discussPostService.findDiscussPostRows(0));
-//        page.setPath("/index?orderMode=" + orderMode);
-        page.setPath("/index");
+        page.setPath("/index?orderMode=" + orderMode);
+//        page.setPath("/index");
 
         // userId = 0,查询所有用户的帖子数据
-        List<DiscussPost> list = discussPostService.findDiscussPosts(0, page.getOffset(), page.getLimit()/*, orderMode*/);
+        List<DiscussPost> list = discussPostService.findDiscussPosts(0, page.getOffset(), page.getLimit(), orderMode);
 //        List<DiscussPost> list = discussPostService.findDiscussPosts(0, 0, 10);
         // discussPosts整合 帖子post 和 user ，相当于vo。
         List<Map<String, Object>> discussPosts = new ArrayList<>();
@@ -62,7 +62,7 @@ public class HomeController implements CommunityConstant {
             }
         }
         model.addAttribute("discussPosts", discussPosts);
-//        model.addAttribute("orderMode", orderMode);
+        model.addAttribute("orderMode", orderMode);
         return "index";
     }
 

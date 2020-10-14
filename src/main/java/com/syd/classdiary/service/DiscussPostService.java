@@ -81,14 +81,14 @@ public class DiscussPostService {
 //                });
 //    }
 
-    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit /*, int orderMode*/) {
+    public List<DiscussPost> findDiscussPosts(int userId, int offset, int limit , int orderMode) {
         //访问热门帖子才缓存，也就是orderMode=1的时候。
 //        if (userId == 0 && orderMode == 1) {
 //            return postListCache.get(offset + ":" + limit);
 //        }
 
         logger.debug("load post list from DB.");
-        return discussPostMapper.selectDiscussPosts(userId, offset, limit /*, orderMode */);
+        return discussPostMapper.selectDiscussPosts(userId, offset, limit , orderMode );
     }
 
     public int findDiscussPostRows(int userId) {
