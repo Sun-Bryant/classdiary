@@ -152,6 +152,7 @@ public class RedisTests {
     }
 
     // HyperLogLog实现 将3组数据合并, 再统计合并后的重复数据的独立总数.
+    // 比如统计网站一周之内的UV.
     @Test
     public void testHyperLogLogUnion() {
         String redisKey2 = "test:hll:02";
