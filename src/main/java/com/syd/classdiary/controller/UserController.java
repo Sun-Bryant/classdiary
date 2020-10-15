@@ -1,5 +1,7 @@
 package com.syd.classdiary.controller;
 
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 import com.syd.classdiary.annotation.LoginRequired;
 import com.syd.classdiary.entity.Comment;
 import com.syd.classdiary.entity.DiscussPost;
@@ -65,51 +67,51 @@ public class UserController implements CommunityConstant {
     @Autowired
     private HostHolder hostHolder;
 
-//    @Value("${qiniu.key.access}")
-//    private String accessKey;
-//
-//    @Value("${qiniu.key.secret}")
-//    private String secretKey;
-//
-//    @Value("${qiniu.bucket.header.name}")
-//    private String headerBucketName;
-//
-//    @Value("${quniu.bucket.header.url}")
-//    private String headerBucketUrl;
+    @Value("${qiniu.key.access}")
+    private String accessKey;
+
+    @Value("${qiniu.key.secret}")
+    private String secretKey;
+
+    @Value("${qiniu.bucket.header.name}")
+    private String headerBucketName;
+
+    @Value("${quniu.bucket.header.url}")
+    private String headerBucketUrl;
 
     @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public String getSettingPage(Model model) {
-//        // 上传文件名称
-//        String fileName = CommunityUtil.generateUUID();
-//        // 设置（期待的）响应信息
-//        StringMap policy = new StringMap();
-//        policy.put("returnBody", CommunityUtil.getJSONString(0));// 不是0，则认为是失败。
-//        // 生成上传凭证
-//        Auth auth = Auth.create(accessKey, secretKey);
-//        String uploadToken = auth.uploadToken(headerBucketName, fileName, 3600, policy);
-//
-//        model.addAttribute("uploadToken", uploadToken);
-//        model.addAttribute("fileName", fileName);
+        // 上传文件名称
+        String fileName = CommunityUtil.generateUUID();
+        // 设置（期待的）响应信息
+        StringMap policy = new StringMap();
+        policy.put("returnBody", CommunityUtil.getJSONString(0));// 不是0，则认为是失败。
+        // 生成上传凭证
+        Auth auth = Auth.create(accessKey, secretKey);
+        String uploadToken = auth.uploadToken(headerBucketName, fileName, 3600, policy);
+
+        model.addAttribute("uploadToken", uploadToken);
+        model.addAttribute("fileName", fileName);
 
         return "/site/setting";
     }
 
-//    // 更新头像路径
-//    @RequestMapping(path = "/header/url", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String updateHeaderUrl(String fileName) {
-//        if (StringUtils.isBlank(fileName)) {
-//            return CommunityUtil.getJSONString(1, "文件名不能为空!");
-//        }
-//
-//        // 拼url
-//        String url = headerBucketUrl + "/" + fileName;
-//        // 更新当前用户头像的路径
-//        userService.updateHeader(hostHolder.getUser().getId(), url);
-//
-//        return CommunityUtil.getJSONString(0);
-//    }
+    // 更新头像路径
+    @RequestMapping(path = "/header/url", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateHeaderUrl(String fileName) {
+        if (StringUtils.isBlank(fileName)) {
+            return CommunityUtil.getJSONString(1, "文件名不能为空!");
+        }
+
+        // 拼url
+        String url = headerBucketUrl + "/" + fileName;
+        // 更新当前用户头像的路径
+        userService.updateHeader(hostHolder.getUser().getId(), url);
+
+        return CommunityUtil.getJSONString(0);
+    }
 
     // 废弃
     @LoginRequired
